@@ -1,3 +1,7 @@
+View Preview 
+
+https://imgur.com/a/UvRpH6D
+
 ## Project setup
 
 npm install
