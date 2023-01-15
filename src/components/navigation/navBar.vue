@@ -39,10 +39,7 @@ export default {
 
   data: () => ({
     showNavbarDrawer: true,
-    items: [
-      { title: "Dashboard", icon: "mdi-home", route: "/dashboard" },
-      { title: "Calendar", icon: "mdi-calendar-blank", route: "/calendar" },
-    ],
+    items: [{ title: "Dashboard", icon: "mdi-home", route: "/dashboard" }],
   }),
 };
 </script>
