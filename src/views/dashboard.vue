@@ -61,8 +61,8 @@
             >
               <v-icon>{{
                 !sortDesc
-                  ? "mdi-sort-alphabetical-ascending"
-                  : "mdi-sort-alphabetical-descending"
+                  ? "mdi-sort-alphabetical-descending"
+                  : "mdi-sort-alphabetical-ascending"
               }}</v-icon>
             </v-btn>
 
@@ -144,18 +144,11 @@ export default {
   data: () => ({
     itemsPerPageArray: [10, 25, 50],
     search: "",
-    filter: {},
     sortDesc: true,
     page: 1,
     itemsPerPage: 10,
     sortBy: "Market_Cap",
-    keys: [
-      "Name",
-      "Market_Cap",
-      "market_cap_rank",
-      "total_supply",
-      "total_volume",
-    ],
+    keys: ["Name", "Market_Cap", "Total_Supply", "Total_Volume"],
     coinData: [],
     isPercent: true,
     refreshCoinData: undefined,
@@ -180,9 +173,6 @@ export default {
     },
     numberOfPages() {
       return Math.ceil(this.coinData.length / this.itemsPerPage);
-    },
-    filteredKeys() {
-      return this.keys.filter((key) => key !== "Name");
     },
   },
   methods: {
