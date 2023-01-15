@@ -80,73 +80,9 @@
       </template>
 
       <template v-slot:default="props">
-        <v-card
-          :color="$vuetify.theme.dark ? 'grey darken-4' : 'grey lighten-3'"
-          v-for="(item, index) in props.items"
-          :key="index"
-          class="ma-5 rounded-xl"
-          flat
-          ><v-list-item>
-            <v-list-item-avatar size="70">
-              <v-img :src="item.image"></v-img>
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <v-list-item-title class="text-h6 mx-3"
-                >{{
-                  item.market_cap_rank +
-                  ". " +
-                  item.name +
-                  " (" +
-                  item.symbol.toUpperCase() +
-                  ")"
-                }}
-                <span
-                  class="font-weight-medium"
-                  :class="
-                    item.price_change_24h < 0 ? 'red--text' : 'green--text'
-                  "
-                >
-                  $ {{ item.current_price.toFixed(2) }}</span
-                ></v-list-item-title
-              >
-
-              <v-list-item-subtitle>
-                <v-chip class="ma-3">
-                  Market Cap :
-                  {{ item.market_cap }}</v-chip
-                >
-                <v-chip v-if="!isNaN(parseFloat(item.total_supply).toFixed(2))">
-                  Supply :
-                  {{ parseFloat(item.total_supply).toFixed(2) }}</v-chip
-                ></v-list-item-subtitle
-              >
-            </v-list-item-content>
-
-            <v-list-item-action>
-              <span
-                class="font-weight-medium text-h6"
-                :class="item.price_change_24h < 0 ? 'red--text' : 'green--text'"
-              >
-                <v-icon
-                  :class="
-                    item.price_change_24h < 0 ? 'red--text' : 'green--text'
-                  "
-                  >{{
-                    item.price_change_24h < 0
-                      ? "mdi-chevron-down"
-                      : "mdi-chevron-up"
-                  }}</v-icon
-                >
-                {{
-                  isPercent
-                    ? item.price_change_percentage_24h.toFixed(2) + "%"
-                    : item.price_change_24h.toFixed(2)
-                }}</span
-              >
-            </v-list-item-action>
-          </v-list-item></v-card
-        >
+        <div v-for="(coin, index) in props.items" :key="index">
+          <coinCard :coin="coin" :showPercent="isPercent" />
+        </div>
       </template>
 
       <template v-slot:footer>
@@ -201,6 +137,7 @@
 </template>
 <script>
 import { mockData } from "../resources/mockData";
+import coinCard from "@/components/crypto/coinCard.vue";
 // import { getCoinData } from "@/services/api";
 export default {
   name: "dashboard-component",
@@ -224,6 +161,7 @@ export default {
     refreshCoinData: undefined,
     mockData,
   }),
+  components: { coinCard },
   mounted() {
     this.fetchCoinData();
     this.refreshCoinData = setInterval(this.fetchCoinData, 10000);
