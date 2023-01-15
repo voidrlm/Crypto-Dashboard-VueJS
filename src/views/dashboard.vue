@@ -86,14 +86,14 @@
       </template>
 
       <template v-slot:footer>
-        <v-row class="mt-2" align="center" justify="center">
+        <v-row class="mt-2 mx-6 ma-2" align="center" justify="center">
           <span class="grey--text">Items per page</span>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 dark
                 text
-                color="primary"
+                color="accent"
                 class="ml-2"
                 v-bind="attrs"
                 v-on="on"
@@ -121,13 +121,19 @@
           <v-btn
             fab
             dark
-            color="blue darken-3"
+            color="accent darken-1"
             class="mr-1"
             @click="formerPage"
           >
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
-          <v-btn fab dark color="blue darken-3" class="ml-1" @click="nextPage">
+          <v-btn
+            fab
+            dark
+            color="accent darken-1"
+            class="ml-1"
+            @click="nextPage"
+          >
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-row>
