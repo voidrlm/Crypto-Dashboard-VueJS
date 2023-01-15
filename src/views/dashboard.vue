@@ -142,9 +142,8 @@
   </v-container>
 </template>
 <script>
-import { mockData } from "../resources/mockData";
 import coinCard from "@/components/crypto/coinCard.vue";
-// import { getCoinData } from "@/services/api";
+import { getCoinData } from "@/services/api";
 export default {
   name: "dashboard-component",
   data: () => ({
@@ -158,7 +157,6 @@ export default {
     coinData: [],
     isPercent: true,
     refreshCoinData: undefined,
-    mockData,
   }),
   components: { coinCard },
   mounted() {
@@ -183,10 +181,9 @@ export default {
   },
   methods: {
     fetchCoinData() {
-      // getCoinData().then((response) => {
-      //   this.coinData = response;
-      this.coinData = mockData;
-      // });
+      getCoinData().then((response) => {
+        this.coinData = response;
+      });
     },
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1;
