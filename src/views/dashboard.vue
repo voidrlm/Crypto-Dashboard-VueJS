@@ -15,12 +15,220 @@
         }}</v-icon
       >{{ getGreetingData }}, User!</v-card-title
     >
+    <v-data-iterator
+      :items="coinData"
+      :items-per-page.sync="itemsPerPage"
+      :page.sync="page"
+      :search="search"
+      :sort-by="sortBy.toLowerCase()"
+      :sort-desc="sortDesc"
+      hide-default-footer
+    >
+      <template v-slot:header>
+        <v-toolbar class="mb-5 mx-1 transparent" elevation="0">
+          <v-flex lg12 xl12>
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              rounded
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field
+          ></v-flex>
+          <template v-if="$vuetify.breakpoint.mdAndUp">
+            <v-select
+              v-model="sortBy"
+              flat
+              solo-inverted
+              rounded
+              hide-details
+              :items="keys"
+              prepend-inner-icon="mdi-magnify"
+              label="Sort by"
+              class="ml-3"
+            ></v-select>
+
+            <v-btn
+              large
+              class="ml-3 mr-3"
+              rounded
+              @click="sortDesc = !sortDesc"
+              :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-3'"
+              elevation="0"
+            >
+              <v-icon>{{
+                !sortDesc
+                  ? "mdi-sort-alphabetical-ascending"
+                  : "mdi-sort-alphabetical-descending"
+              }}</v-icon>
+            </v-btn>
+
+            <v-btn
+              large
+              rounded
+              @click="isPercent = !isPercent"
+              elevation="0"
+              :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-3'"
+            >
+              <v-icon>{{ !isPercent ? "mdi-percent" : "mdi-numeric" }}</v-icon>
+            </v-btn>
+          </template>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:default="props">
+        <v-card
+          :color="$vuetify.theme.dark ? 'grey darken-4' : 'grey lighten-3'"
+          v-for="(item, index) in props.items"
+          :key="index"
+          class="ma-5 rounded-xl"
+          flat
+          ><v-list-item>
+            <v-list-item-avatar size="70">
+              <v-img :src="item.image"></v-img>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title class="text-h6 mx-3"
+                >{{
+                  item.market_cap_rank +
+                  ". " +
+                  item.name +
+                  " (" +
+                  item.symbol.toUpperCase() +
+                  ")"
+                }}
+                <span
+                  class="font-weight-medium"
+                  :class="
+                    item.price_change_24h < 0 ? 'red--text' : 'green--text'
+                  "
+                >
+                  $ {{ item.current_price.toFixed(2) }}</span
+                ></v-list-item-title
+              >
+
+              <v-list-item-subtitle>
+                <v-chip class="ma-3">
+                  Market Cap :
+                  {{ item.market_cap }}</v-chip
+                >
+                <v-chip v-if="!isNaN(parseFloat(item.total_supply).toFixed(2))">
+                  Supply :
+                  {{ parseFloat(item.total_supply).toFixed(2) }}</v-chip
+                ></v-list-item-subtitle
+              >
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <span
+                class="font-weight-medium text-h6"
+                :class="item.price_change_24h < 0 ? 'red--text' : 'green--text'"
+              >
+                <v-icon
+                  :class="
+                    item.price_change_24h < 0 ? 'red--text' : 'green--text'
+                  "
+                  >{{
+                    item.price_change_24h < 0
+                      ? "mdi-chevron-down"
+                      : "mdi-chevron-up"
+                  }}</v-icon
+                >
+                {{
+                  isPercent
+                    ? item.price_change_percentage_24h.toFixed(2) + "%"
+                    : item.price_change_24h.toFixed(2)
+                }}</span
+              >
+            </v-list-item-action>
+          </v-list-item></v-card
+        >
+      </template>
+
+      <template v-slot:footer>
+        <v-row class="mt-2" align="center" justify="center">
+          <span class="grey--text">Items per page</span>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                dark
+                text
+                color="primary"
+                class="ml-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ itemsPerPage }}
+                <v-icon>mdi-chevron-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(number, index) in itemsPerPageArray"
+                :key="index"
+                @click="updateItemsPerPage(number)"
+              >
+                <v-list-item-title>{{ number }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <v-spacer></v-spacer>
+
+          <span class="mr-4 grey--text">
+            Page {{ page }} of {{ numberOfPages }}
+          </span>
+          <v-btn
+            fab
+            dark
+            color="blue darken-3"
+            class="mr-1"
+            @click="formerPage"
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-btn fab dark color="blue darken-3" class="ml-1" @click="nextPage">
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-row>
+      </template>
+    </v-data-iterator>
   </v-container>
 </template>
 <script>
+import { mockData } from "../resources/mockData";
+// import { getCoinData } from "@/services/api";
 export default {
   name: "dashboard-component",
-  data: () => ({}),
+  data: () => ({
+    itemsPerPageArray: [10, 25, 50],
+    search: "",
+    filter: {},
+    sortDesc: true,
+    page: 1,
+    itemsPerPage: 10,
+    sortBy: "Market_Cap",
+    keys: [
+      "Name",
+      "Market_Cap",
+      "market_cap_rank",
+      "total_supply",
+      "total_volume",
+    ],
+    coinData: [],
+    isPercent: true,
+    refreshCoinData: undefined,
+    mockData,
+  }),
+  mounted() {
+    this.fetchCoinData();
+    this.refreshCoinData = setInterval(this.fetchCoinData, 10000);
+    console.log(this.coinData);
+  },
   computed: {
     getGreetingData() {
       var today = new Date();
@@ -31,6 +239,29 @@ export default {
         : curHr > 18
         ? "Good Evening"
         : "Good Afternoon";
+    },
+    numberOfPages() {
+      return Math.ceil(this.coinData.length / this.itemsPerPage);
+    },
+    filteredKeys() {
+      return this.keys.filter((key) => key !== "Name");
+    },
+  },
+  methods: {
+    fetchCoinData() {
+      // getCoinData().then((response) => {
+      //   this.coinData = response;
+      this.coinData = mockData;
+      // });
+    },
+    nextPage() {
+      if (this.page + 1 <= this.numberOfPages) this.page += 1;
+    },
+    formerPage() {
+      if (this.page - 1 >= 1) this.page -= 1;
+    },
+    updateItemsPerPage(number) {
+      this.itemsPerPage = number;
     },
   },
 };
