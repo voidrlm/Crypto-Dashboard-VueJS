@@ -2,33 +2,30 @@ View Preview
 
 https://imgur.com/a/UvRpH6D
 
-## Project setup
+A web application built using VueJS and Vuetify for tracking and monitoring cryptocurrency prices.
 
-npm install
+Features
+Real-time updates of cryptocurrency prices
+Responsive design for desktop and mobile devices
 
-```
+Requirements
+NodeJS
+npm (Node Package Manager)
 
-### Compiles and hot-reloads for development
-```
+Installation
+Clone the repository
 
-npm run serve
+Navigate to the project directory
+$ cd crypto-dashboard
 
-```
+Install the dependencies
+$ npm install
 
-### Compiles and minifies for production
-```
+Start the development server
+$ npm run serve
+Open a web browser and navigate to http://localhost:8080
 
-npm run build
 
-```
-
-### Lints and fixes files
-```
-
-npm run lint
-
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-```
+Built With
+VueJS - JavaScript framework for building user interfaces
+Vuetify - Material Design component framework for VueJS
