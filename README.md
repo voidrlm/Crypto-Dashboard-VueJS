@@ -1,22 +1,22 @@
-View Preview 
+## View Preview 
 
 https://imgur.com/a/UvRpH6D
 
 A web application built using VueJS and Vuetify for tracking and monitoring cryptocurrency prices.
 
-Features
+## Features
 
 Real-time updates of cryptocurrency prices
 
 Responsive design for desktop and mobile devices
 
-Requirements
+## Requirements
 
 NodeJS
 
 npm (Node Package Manager)
 
-Installation
+## Installation
 
 Clone the repository
 
@@ -35,7 +35,7 @@ $ npm run serve
 Open a web browser and navigate to http://localhost:8080
 
 
-Built With
+## Built With
 
 VueJS - JavaScript framework for building user interfaces
 
