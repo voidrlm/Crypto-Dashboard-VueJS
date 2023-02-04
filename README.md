@@ -1,6 +1,7 @@
-## View Preview 
-
-https://imgur.com/a/UvRpH6D
+## Demo
+<p>
+    <a href="https://voidrlm.github.io/Crypto-Dashboard-VueJS/#/dashboard" target="_blank">Online Demo</a>
+</p>
 
 A web application built using VueJS and Vuetify for tracking and monitoring cryptocurrency prices.
 
